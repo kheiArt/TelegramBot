@@ -1,0 +1,9 @@
+*.pyc
+*.sqlight
+env
+__pycache__
+.DS_Store
+*.xml
+constants.py
+.idea
+.idea/*
