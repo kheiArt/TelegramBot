@@ -1,6 +1,7 @@
 *.pyc
 *.sqlight
 bot.log
+*.log
 env
 __pycache__
 .DS_Store
