@@ -1,9 +1,9 @@
 *.pyc
 *.sqlight
+bot.log
 env
 __pycache__
 .DS_Store
 *.xml
 constants.py
-.idea
-.idea/*
+.idea/
