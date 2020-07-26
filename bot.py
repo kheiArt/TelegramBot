@@ -1,7 +1,7 @@
 
 from constants import *
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-from handlers import start_user, checking_number, send_rose_picture, user_coordinates, speaks_to_user
+from handlers import start_user, checking_number, send_rose_picture, user_coordinates, speaks_to_user, check_photo
 import logging
 
 
@@ -18,6 +18,7 @@ def main():
     dp.add_handler(CommandHandler("rose", send_rose_picture))
     dp.add_handler(MessageHandler(Filters.regex('^(Send a rose)$'), send_rose_picture))
     dp.add_handler(MessageHandler(Filters.location, user_coordinates))
+    dp.add_handler(MessageHandler(Filters.photo, check_photo))
     dp.add_handler(MessageHandler(Filters.text, speaks_to_user))
 
     logging.info('The bot has started!')

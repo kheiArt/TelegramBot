@@ -1,8 +1,8 @@
 
 from glob import glob
+import os
 from random import choice
-from utils import get_emoji, get_random_number, main_keyboard
-
+from utils import get_emoji, get_random_number, main_keyboard, is_rose
 
 
 def start_user(update, context):
@@ -42,9 +42,22 @@ def user_coordinates(update, context):
     context.user_data['emoji'] = get_emoji(context.user_data)
     coords = update.message.location
     update.message.reply_text(
-        f"Ваши координаты {coords} {context.user_data['emoji']}!",
+        f" Your coordinates {coords} {context.user_data['emoji']}!",
         reply_markup=main_keyboard()
     )
 
 
+def check_photo(update, context):
+    update.message.reply_text('Processing the photo')
+    os.makedirs("downloads", exist_ok=True)
+    photo_from_user = context.bot.getFile(update.message.photo[-1].file_id)
+    photo_name = os.path.join('downloads', f"{photo_from_user.file_id}.jpg")
+    photo_from_user.download(photo_name)
 
+    if is_rose(photo_name):
+        update.message.reply_text("Found a rose, added to the library")
+        new_photo_name = os.path.join('rose', f'rose_{photo_from_user.file_id}.jpg')
+        os.rename(photo_name, new_photo_name)
+    else:
+        os.remove(photo_name)
+        update.message.reply_text("Rose is not detected!")
