@@ -6,8 +6,8 @@ from utils import get_emoji, get_random_number, main_keyboard, is_rose
 
 
 def start_user(update, context):
-    print('/get started')
-    context.user_data['emoji'] = get_emoji(context.user_data)
+    print("/get started")
+    context.user_data["emoji"] = get_emoji(context.user_data)
     update.message.reply_text(f"Hi user! {context.user_data['emoji']}", reply_markup=main_keyboard())
 
 
@@ -32,14 +32,14 @@ def checking_number(update, context):
 
 
 def send_rose_picture(update, context):
-    rose_photos_list = glob('rose/*.jpg')
+    rose_photos_list = glob("rose/*.jpg")
     rose_pic_filename = choice(rose_photos_list)
     chat_id = update.effective_chat.id
-    context.bot.send_photo(chat_id=chat_id, photo=open(rose_pic_filename, 'rb'), reply_markup=main_keyboard())
+    context.bot.send_photo(chat_id=chat_id, photo=open(rose_pic_filename, "rb"), reply_markup=main_keyboard())
 
 
 def user_coordinates(update, context):
-    context.user_data['emoji'] = get_emoji(context.user_data)
+    context.user_data["emoji"] = get_emoji(context.user_data)
     coords = update.message.location
     update.message.reply_text(
         f" Your coordinates {coords} {context.user_data['emoji']}!",
@@ -48,7 +48,7 @@ def user_coordinates(update, context):
 
 
 def check_photo(update, context):
-    update.message.reply_text('Processing the photo')
+    update.message.reply_text("Processing the photo")
     os.makedirs("downloads", exist_ok=True)
     photo_from_user = context.bot.getFile(update.message.photo[-1].file_id)
     photo_name = os.path.join('downloads', f"{photo_from_user.file_id}.jpg")

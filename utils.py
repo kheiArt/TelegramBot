@@ -26,7 +26,7 @@ def get_random_number(user_number):
 
 
 def main_keyboard():
-    return ReplyKeyboardMarkup([['Send a rose', KeyboardButton('My coordinates', request_location=True)]])
+    return ReplyKeyboardMarkup([['Send a rose', KeyboardButton('My coordinates', request_location=True), 'fill the questionnaire']])
 
 
 def is_rose(file_name):
