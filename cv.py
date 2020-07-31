@@ -1,4 +1,6 @@
-from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import ParseMode, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram.ext import ConversationHandler
+from utils import main_keyboard
 
 def cv_start(update, context):
     update.message.reply_text(
@@ -28,3 +30,32 @@ def cv_rating(update, context):
         "Leave a comment in free form or skip this step enter /skip"
     )
     return "comment"
+
+def cv_comment(update, context):
+    context.user_data["cv"]["comment"] = update.message.text
+    user_text = format_cv(context.user_data['cv'])
+
+    update.message.reply_text(user_text, reply_markup=main_keyboard(),
+                              parse_mode=ParseMode.HTML)
+    return ConversationHandler.END
+
+
+
+def cv_skip(update, context):
+    user_text = format_cv(context.user_data['cv'])
+
+    update.message.reply_text(user_text, reply_markup=main_keyboard(),
+                              parse_mode=ParseMode.HTML)
+    return ConversationHandler.END
+
+
+def format_cv(cv):
+    user_text = f"""<b>First Name Last Name:</b> {cv['name']}
+    <b>Rating:</b> {cv['rating']}"""
+    if cv.get('comment'):
+        user_text += f"<b>Comment:</b> {cv['comment']}"
+
+    return user_text
+
+def cv_dontknow(update, context):
+    update.message.reply_text("I do not understand")

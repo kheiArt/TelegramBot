@@ -1,6 +1,6 @@
 
 from constants import *
-from cv import cv_start, cv_name, cv_rating
+from cv import cv_start, cv_name, cv_rating, cv_skip, cv_comment, cv_dontknow
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, ConversationHandler
 from handlers import start_user, checking_number, send_rose_picture, user_coordinates, speaks_to_user, check_photo
 import logging
@@ -21,9 +21,13 @@ def main():
         ],
         states={
             "name": [MessageHandler(Filters.text, cv_name)],
-            "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), cv_rating)]
+            "rating": [MessageHandler(Filters.regex('^(1|2|3|4|5)$'), cv_rating)],
+            "comment": [
+                CommandHandler('skip', cv_skip),
+                MessageHandler(Filters.text, cv_comment)
+        ]
         },
-        fallbacks=[]
+        fallbacks=[MessageHandler(Filters.text | Filters.video | Filters.photo | Filters.document | Filters.location, cv_dontknow)]
     )
     dp.add_handler(CV)
     dp.add_handler(CommandHandler("start", start_user))
